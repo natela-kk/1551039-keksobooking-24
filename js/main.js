@@ -1,15 +1,20 @@
 function getRandomInt(min, max){
   if(min >= 0 && max > min){
     return Math.floor(Math.random() * (max - min + 1) + min);
-  } return 'Указан неверный диапазон';
+  }
+  window.console.warn('Указан неверный диапазон');
+  return false;
 }
 getRandomInt();
 
 function getRandomFraction(min, max, digitsNumber){
   if(min >= 0 && max > min){
     return ((Math.random() * (max - min + 1) + min)).toFixed(digitsNumber);
-  } return 'Указан неверный диапазон';
+  }
+  window.console.warn('Указан неверный диапазон');
+  return false;
 }
+
 getRandomFraction();
 
 // Источники:
