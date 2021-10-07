@@ -10,7 +10,6 @@ function getRandomPositiveFloat (a, b, digits) {
   const result = Math.random() * (upper - lower) + lower;
   return result.toFixed(digits);
 }
-
 const typeArray = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
 const checkinArray = ['12:00', '13:00', '14:00'];
 const checkoutArray = ['12:00', '13:00', '14:00'];
