@@ -1,22 +1,82 @@
-function getRandomInt(min, max){
-  if(min >= 0 && max > min){
-    return Math.floor(Math.random() * (max - min + 1) + min);
-  }
-  window.console.warn('Указан неверный диапазон');
-  return false;
-}
-getRandomInt();
-
-function getRandomFraction(min, max, digitsNumber){
-  if(min >= 0 && max > min){
-    return ((Math.random() * (max - min + 1) + min)).toFixed(digitsNumber);
-  }
-  window.console.warn('Указан неверный диапазон');
-  return false;
+function getRandomPositiveInteger (a, b) {
+  const lower = Math.ceil(Math.min(Math.abs(a), Math.abs(b)));
+  const upper = Math.floor(Math.max(Math.abs(a), Math.abs(b)));
+  const result = Math.random() * (upper - lower + 1) + lower;
+  return Math.floor(result);
+};
+function getRandomPositiveFloat (a, b, digits) {
+  const lower = Math.min(Math.abs(a), Math.abs(b));
+  const upper = Math.max(Math.abs(a), Math.abs(b));
+  const result = Math.random() * (upper - lower) + lower;
+  return result.toFixed(digits);
 }
 
-getRandomFraction();
+const typeArray = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
+const checkinArray = ['12:00', '13:00', '14:00'];
+const checkoutArray = ['12:00', '13:00', '14:00'];
+const allFeatures = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 
-// Источники:
-// 1. https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Math/random
-// 2. https://htmler.ru/2014/08/14/javascript-kolichestvo-znakov-posle-zapyatoy/#:~:text=toFixed%20%E2%80%94%20%D1%8D%D1%82%D0%BE%20%D0%B2%D1%81%D1%82%D1%80%D0%BE%D0%B5%D0%BD%D0%BD%D1%8B%D0%B9%20%D0%B2,%2F%2Fnum_str%3D1538%3B%20num_str%3Dnum.toFixed(2)%3B%20%2F%2Fnum_str%3D1538.98%3B%20num_str%3Dnum.toFixed(5)%3B%20%2F%2Fnum_str%3D1538.98912
+const features = [];
+function getRandomFeaturesArray(){
+  while(features.length < getRandomPositiveInteger(1, allFeatures.length)){
+    features.push(allFeatures[getRandomPositiveInteger (0, allFeatures.length - 1)]);
+  }
+  return features;
+}
+const allPhotos = ['https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg', 'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg', 'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg'];
+
+const photos = [];
+function getRandomPhotosArray(){
+  while(photos.length < getRandomPositiveInteger(1, allPhotos.length)){
+    photos.push(allPhotos[getRandomPositiveInteger (0, allPhotos.length - 1)]);
+  }
+  return photos;
+}
+function getAvatarNumber(){
+  const number = getRandomPositiveInteger(1, 10)
+  if(number < 10){
+    return '0' + number;
+  } return number;
+}
+
+const object = {};
+
+function UserAdd(){
+  object.author = {
+    avatar: 'img/avatars/user' + getAvatarNumber() + '.png',
+  };
+
+  const location = {
+    lat: getRandomPositiveFloat(35.65000, 35.70000, 5),
+    lng: getRandomPositiveFloat(139.70000, 139.80000, 5),
+  };
+
+  object.location = location;
+
+  object.offer = {
+    title: 'аренда жилья',
+    adress: location.lat + ', ' + location.lng,
+    price: getRandomPositiveInteger(0, 10000),
+    type: typeArray[getRandomPositiveInteger(0, typeArray.length - 1)],
+    rooms: getRandomPositiveInteger(1, 10),
+    guests: getRandomPositiveInteger(1, 10),
+    checkin: checkinArray[getRandomPositiveInteger(0, checkinArray.length - 1)],
+    checkout: checkoutArray[getRandomPositiveInteger(0, checkinArray.length - 1)],
+    features: getRandomFeaturesArray(),
+    description: 'Большое, светлое помещение',
+    photos: getRandomPhotosArray(),
+  };
+  return object;
+}
+
+const array =[];
+
+function getNewArray() {
+  while(array.length <= 10){
+    array.push(UserAdd());
+  }
+  return array;
+}
+
+getNewArray();
+
