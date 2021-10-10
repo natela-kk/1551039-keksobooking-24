@@ -17,14 +17,6 @@ const CHECKOUT_ARRAY = ['12:00', '13:00', '14:00'];
 const ALL_FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 const ALL_PHOTOS = ['https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg', 'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg', 'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg'];
 
-
-function getRandomInteger (min, max) {
-  const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
-  const upper = Math.floor(Math.max(Math.abs(min), Math.abs(max)));
-  const result = Math.random() * (upper - lower + 1) + lower;
-  return Math.floor(result);
-};
-
 function generateFeatures(){
   const features = [];
   const newLength = getRandomInteger(1, ALL_FEATURES.length);
@@ -47,19 +39,18 @@ function generatePhotos(){
   } return photos;
 }
 
-function getAvatarNumber(){
-  for(let ind = 0; ind <= 10; ind++){
-    if(ind < 10){
-      return `0${  ind}`;
-    } return ind;
-  }
-}
+
+ function getAuthorUrl(id){
+   const userID = String(id).padStart(2, 0);
+   return `img/avatars/user${userID}.png`;
+   };
+
 
 const offer = {};
 
-function createOffer(){
+function createOffer(userID){
   offer.author = {
-    avatar: `img/avatars/user${  getAvatarNumber()  }.png`,
+    avatar: getAuthorUrl(userID),
   };
 
   const location = {
@@ -85,14 +76,13 @@ function createOffer(){
   return offer;
 }
 
-const array =[];
 
-function getNewArray() {
-  while(array.length <= 10){
-    array.push(createOffer());
+
+function getOffersArray() {
+  const offers =[];
+  for(let i = 1; i <= 10; i++){
+    offers.push(createOffer(i));
   }
-  return array;
+  return offers;
 }
-
-getNewArray();
-
+getOffersArray();
