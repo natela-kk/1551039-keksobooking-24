@@ -1,49 +1,65 @@
-function getRandomPositiveInteger (a, b) {
-  const lower = Math.ceil(Math.min(Math.abs(a), Math.abs(b)));
-  const upper = Math.floor(Math.max(Math.abs(a), Math.abs(b)));
+function getRandomInteger (min, max) {
+  const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
+  const upper = Math.floor(Math.max(Math.abs(min), Math.abs(max)));
   const result = Math.random() * (upper - lower + 1) + lower;
   return Math.floor(result);
-};
-function getRandomPositiveFloat (a, b, digits) {
-  const lower = Math.min(Math.abs(a), Math.abs(b));
-  const upper = Math.max(Math.abs(a), Math.abs(b));
+}
+function getRandomPositiveFloat (min, max, digits) {
+  const lower = Math.min(Math.abs(min), Math.abs(max));
+  const upper = Math.max(Math.abs(min), Math.abs(max));
   const result = Math.random() * (upper - lower) + lower;
   return result.toFixed(digits);
 }
 
-const typeArray = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
-const checkinArray = ['12:00', '13:00', '14:00'];
-const checkoutArray = ['12:00', '13:00', '14:00'];
-const allFeatures = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+const TYPE_ARRAY = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
+const CHECKIN_ARRAY = ['12:00', '13:00', '14:00'];
+const CHECKOUT_ARRAY = ['12:00', '13:00', '14:00'];
+const ALL_FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+const ALL_PHOTOS = ['https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg', 'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg', 'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg'];
 
-const features = [];
-function getRandomFeaturesArray(){
-  while(features.length < getRandomPositiveInteger(1, allFeatures.length)){
-    features.push(allFeatures[getRandomPositiveInteger (0, allFeatures.length - 1)]);
-  }
-  return features;
-}
-const allPhotos = ['https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg', 'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg', 'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg'];
 
-const photos = [];
-function getRandomPhotosArray(){
-  while(photos.length < getRandomPositiveInteger(1, allPhotos.length)){
-    photos.push(allPhotos[getRandomPositiveInteger (0, allPhotos.length - 1)]);
-  }
-  return photos;
+function getRandomInteger (min, max) {
+  const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
+  const upper = Math.floor(Math.max(Math.abs(min), Math.abs(max)));
+  const result = Math.random() * (upper - lower + 1) + lower;
+  return Math.floor(result);
+};
+
+function generateFeatures(){
+  const features = [];
+  const newLength = getRandomInteger(1, ALL_FEATURES.length);
+  for (let i = 0; i <= newLength; i++){
+    const newFeature = ALL_FEATURES[getRandomInteger(1, ALL_FEATURES.length - 1)];
+    if(!features.includes(newFeature)){
+      features.push(newFeature);
+    }
+  } return features;
 }
+
+function generatePhotos(){
+  const photos = [];
+  const newLength = getRandomInteger(1, ALL_PHOTOS.length);
+  for (let i = 0; i <= newLength; i++){
+    const newPhoto = ALL_PHOTOS[getRandomInteger(1, ALL_PHOTOS.length - 1)];
+    if(!photos.includes(newPhoto)){
+      photos.push(newPhoto);
+    }
+  } return photos;
+}
+
 function getAvatarNumber(){
-  const number = getRandomPositiveInteger(1, 10)
-  if(number < 10){
-    return '0' + number;
-  } return number;
+  for(let ind = 0; ind <= 10; ind++){
+    if(ind < 10){
+      return `0${  ind}`;
+    } return ind;
+  }
 }
 
-const object = {};
+const offer = {};
 
-function UserAdd(){
-  object.author = {
-    avatar: 'img/avatars/user' + getAvatarNumber() + '.png',
+function createOffer(){
+  offer.author = {
+    avatar: `img/avatars/user${  getAvatarNumber()  }.png`,
   };
 
   const location = {
@@ -51,29 +67,29 @@ function UserAdd(){
     lng: getRandomPositiveFloat(139.70000, 139.80000, 5),
   };
 
-  object.location = location;
+  offer.location = location;
 
-  object.offer = {
+  offer.offer = {
     title: 'аренда жилья',
-    adress: location.lat + ', ' + location.lng,
-    price: getRandomPositiveInteger(0, 10000),
-    type: typeArray[getRandomPositiveInteger(0, typeArray.length - 1)],
-    rooms: getRandomPositiveInteger(1, 10),
-    guests: getRandomPositiveInteger(1, 10),
-    checkin: checkinArray[getRandomPositiveInteger(0, checkinArray.length - 1)],
-    checkout: checkoutArray[getRandomPositiveInteger(0, checkinArray.length - 1)],
-    features: getRandomFeaturesArray(),
-    description: 'Большое, светлое помещение',
-    photos: getRandomPhotosArray(),
+    adress: `${location.lat  }, ${  location.lng}`,
+    price: getRandomInteger(0, 10000),
+    type: TYPE_ARRAY[getRandomInteger(0, TYPE_ARRAY.length - 1)],
+    rooms: getRandomInteger(1, 10),
+    guests: getRandomInteger(1, 10),
+    checkin: CHECKIN_ARRAY[getRandomInteger(0, CHECKIN_ARRAY.length - 1)],
+    checkout: CHECKOUT_ARRAY[getRandomInteger(0, CHECKIN_ARRAY.length - 1)],
+    features: generateFeatures(),
+    description: 'Большое светлое помещение',
+    photos: generatePhotos(),
   };
-  return object;
+  return offer;
 }
 
 const array =[];
 
 function getNewArray() {
   while(array.length <= 10){
-    array.push(UserAdd());
+    array.push(createOffer());
   }
   return array;
 }
