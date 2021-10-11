@@ -17,7 +17,7 @@ const getRandomPositiveFloat = (min, max, digits) => {
   return result.toFixed(digits);
 };
 
-const generateFeatures = () =>{
+const generateFeatures = () => {
   const features = [];
   const newLength = getRandomInteger(1, ALL_FEATURES.length);
   for (let i = 0; i <= newLength; i++){
@@ -29,7 +29,7 @@ const generateFeatures = () =>{
   return features;
 };
 
-const generatePhotos = () =>{
+const generatePhotos = () => {
   const photos = [];
   const newLength = getRandomInteger(1, ALL_PHOTOS.length);
   for (let i = 0; i <= newLength; i++){
@@ -47,7 +47,7 @@ const getAuthorUrl = (id) => {
   return `img/avatars/user${userID}.png`;
 };
 
-const createAnnouncement = (userID) =>{
+const createAnnouncement = (userID) => {
   const announcement = {};
   announcement.author = {
     avatar: getAuthorUrl(userID),
@@ -62,13 +62,13 @@ const createAnnouncement = (userID) =>{
 
   announcement.offer = {
     title: 'аренда жилья',
-    address: `${location.lat  }, ${  location.lng}`,
+    address: `${location.lat}, ${location.lng}`,
     price: getRandomInteger(0, 10000),
     type: ACCOMMODATION_TYPES[getRandomInteger(0, ACCOMMODATION_TYPES.length - 1)],
     rooms: getRandomInteger(1, 10),
     guests: getRandomInteger(1, 10),
     checkin: CHECKIN_OPTIONS[getRandomInteger(0, CHECKIN_OPTIONS.length - 1)],
-    checkout: CHECKOUT_OPTIONS[getRandomInteger(0, CHECKIN_OPTIONS.length - 1)],
+    checkout: CHECKOUT_OPTIONS[getRandomInteger(0, CHECKOUT_OPTIONS.length - 1)],
     features: generateFeatures(),
     description: 'Большое светлое помещение',
     photos: generatePhotos(),
