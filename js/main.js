@@ -1,22 +1,86 @@
-function getRandomInt(min, max){
-  if(min >= 0 && max > min){
-    return Math.floor(Math.random() * (max - min + 1) + min);
+const ACCOMMODATION_TYPES = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
+const CHECKIN_OPTIONS = ['12:00', '13:00', '14:00'];
+const CHECKOUT_OPTIONS = ['12:00', '13:00', '14:00'];
+const ALL_FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+const ALL_PHOTOS = ['https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg', 'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg', 'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg'];
+
+const getRandomInteger = (min, max) => {
+  const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
+  const upper = Math.floor(Math.max(Math.abs(min), Math.abs(max)));
+  const result = Math.random() * (upper - lower + 1) + lower;
+  return Math.floor(result);
+};
+const getRandomPositiveFloat = (min, max, digits) => {
+  const lower = Math.min(Math.abs(min), Math.abs(max));
+  const upper = Math.max(Math.abs(min), Math.abs(max));
+  const result = Math.random() * (upper - lower) + lower;
+  return result.toFixed(digits);
+};
+
+const generateFeatures = () => {
+  const features = [];
+  const newLength = getRandomInteger(1, ALL_FEATURES.length);
+  for (let i = 0; i <= newLength; i++){
+    const newFeature = ALL_FEATURES[getRandomInteger(1, ALL_FEATURES.length - 1)];
+    if(!features.includes(newFeature)){
+      features.push(newFeature);
+    }
   }
-  window.console.warn('Указан неверный диапазон');
-  return false;
-}
-getRandomInt();
+  return features;
+};
 
-function getRandomFraction(min, max, digitsNumber){
-  if(min >= 0 && max > min){
-    return ((Math.random() * (max - min + 1) + min)).toFixed(digitsNumber);
+const generatePhotos = () => {
+  const photos = [];
+  const newLength = getRandomInteger(1, ALL_PHOTOS.length);
+  for (let i = 0; i <= newLength; i++){
+    const newPhoto = ALL_PHOTOS[getRandomInteger(1, ALL_PHOTOS.length - 1)];
+    if(!photos.includes(newPhoto)){
+      photos.push(newPhoto);
+    }
   }
-  window.console.warn('Указан неверный диапазон');
-  return false;
-}
+  return photos;
+};
 
-getRandomFraction();
 
-// Источники:
-// 1. https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Math/random
-// 2. https://htmler.ru/2014/08/14/javascript-kolichestvo-znakov-posle-zapyatoy/#:~:text=toFixed%20%E2%80%94%20%D1%8D%D1%82%D0%BE%20%D0%B2%D1%81%D1%82%D1%80%D0%BE%D0%B5%D0%BD%D0%BD%D1%8B%D0%B9%20%D0%B2,%2F%2Fnum_str%3D1538%3B%20num_str%3Dnum.toFixed(2)%3B%20%2F%2Fnum_str%3D1538.98%3B%20num_str%3Dnum.toFixed(5)%3B%20%2F%2Fnum_str%3D1538.98912
+const getAuthorUrl = (id) => {
+  const userID = String(id).padStart(2, 0);
+  return `img/avatars/user${userID}.png`;
+};
+
+const createAnnouncement = (userID) => {
+  const announcement = {};
+  announcement.author = {
+    avatar: getAuthorUrl(userID),
+  };
+
+  const location = {
+    lat: getRandomPositiveFloat(35.65000, 35.70000, 5),
+    lng: getRandomPositiveFloat(139.70000, 139.80000, 5),
+  };
+
+  announcement.location = location;
+
+  announcement.offer = {
+    title: 'аренда жилья',
+    address: `${location.lat}, ${location.lng}`,
+    price: getRandomInteger(0, 10000),
+    type: ACCOMMODATION_TYPES[getRandomInteger(0, ACCOMMODATION_TYPES.length - 1)],
+    rooms: getRandomInteger(1, 10),
+    guests: getRandomInteger(1, 10),
+    checkin: CHECKIN_OPTIONS[getRandomInteger(0, CHECKIN_OPTIONS.length - 1)],
+    checkout: CHECKOUT_OPTIONS[getRandomInteger(0, CHECKOUT_OPTIONS.length - 1)],
+    features: generateFeatures(),
+    description: 'Большое светлое помещение',
+    photos: generatePhotos(),
+  };
+  return announcement;
+};
+
+const getAnnouncementsList = () => {
+  const announcements =[];
+  for(let i = 1; i <= 10; i++){
+    announcements.push(createAnnouncement(i));
+  }
+  return announcements;
+};
+getAnnouncementsList();
