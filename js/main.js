@@ -1,23 +1,23 @@
-function getRandomInteger (min, max) {
+const ACCOMMODATION_TYPES = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
+const CHECKIN_OPTIONS = ['12:00', '13:00', '14:00'];
+const CHECKOUT_OPTIONS = ['12:00', '13:00', '14:00'];
+const ALL_FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+const ALL_PHOTOS = ['https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg', 'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg', 'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg'];
+
+const getRandomInteger = (min, max) => {
   const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
   const upper = Math.floor(Math.max(Math.abs(min), Math.abs(max)));
   const result = Math.random() * (upper - lower + 1) + lower;
   return Math.floor(result);
-}
-function getRandomPositiveFloat (min, max, digits) {
+};
+const getRandomPositiveFloat = (min, max, digits) => {
   const lower = Math.min(Math.abs(min), Math.abs(max));
   const upper = Math.max(Math.abs(min), Math.abs(max));
   const result = Math.random() * (upper - lower) + lower;
   return result.toFixed(digits);
-}
+};
 
-const TYPE_ARRAY = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
-const CHECKIN_ARRAY = ['12:00', '13:00', '14:00'];
-const CHECKOUT_ARRAY = ['12:00', '13:00', '14:00'];
-const ALL_FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-const ALL_PHOTOS = ['https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg', 'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg', 'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg'];
-
-function generateFeatures(){
+const generateFeatures = () =>{
   const features = [];
   const newLength = getRandomInteger(1, ALL_FEATURES.length);
   for (let i = 0; i <= newLength; i++){
@@ -25,10 +25,11 @@ function generateFeatures(){
     if(!features.includes(newFeature)){
       features.push(newFeature);
     }
-  } return features;
-}
+  }
+  return features;
+};
 
-function generatePhotos(){
+const generatePhotos = () =>{
   const photos = [];
   const newLength = getRandomInteger(1, ALL_PHOTOS.length);
   for (let i = 0; i <= newLength; i++){
@@ -36,20 +37,19 @@ function generatePhotos(){
     if(!photos.includes(newPhoto)){
       photos.push(newPhoto);
     }
-  } return photos;
-}
+  }
+  return photos;
+};
 
 
- function getAuthorUrl(id){
-   const userID = String(id).padStart(2, 0);
-   return `img/avatars/user${userID}.png`;
-   };
+const getAuthorUrl = (id) => {
+  const userID = String(id).padStart(2, 0);
+  return `img/avatars/user${userID}.png`;
+};
 
-
-const offer = {};
-
-function createOffer(userID){
-  offer.author = {
+const createAnnouncement = (userID) =>{
+  const announcement = {};
+  announcement.author = {
     avatar: getAuthorUrl(userID),
   };
 
@@ -58,31 +58,29 @@ function createOffer(userID){
     lng: getRandomPositiveFloat(139.70000, 139.80000, 5),
   };
 
-  offer.location = location;
+  announcement.location = location;
 
-  offer.offer = {
+  announcement.offer = {
     title: 'аренда жилья',
-    adress: `${location.lat  }, ${  location.lng}`,
+    address: `${location.lat  }, ${  location.lng}`,
     price: getRandomInteger(0, 10000),
-    type: TYPE_ARRAY[getRandomInteger(0, TYPE_ARRAY.length - 1)],
+    type: ACCOMMODATION_TYPES[getRandomInteger(0, ACCOMMODATION_TYPES.length - 1)],
     rooms: getRandomInteger(1, 10),
     guests: getRandomInteger(1, 10),
-    checkin: CHECKIN_ARRAY[getRandomInteger(0, CHECKIN_ARRAY.length - 1)],
-    checkout: CHECKOUT_ARRAY[getRandomInteger(0, CHECKIN_ARRAY.length - 1)],
+    checkin: CHECKIN_OPTIONS[getRandomInteger(0, CHECKIN_OPTIONS.length - 1)],
+    checkout: CHECKOUT_OPTIONS[getRandomInteger(0, CHECKIN_OPTIONS.length - 1)],
     features: generateFeatures(),
     description: 'Большое светлое помещение',
     photos: generatePhotos(),
   };
-  return offer;
-}
+  return announcement;
+};
 
-
-
-function getOffersArray() {
-  const offers =[];
+const getAnnouncementsList = () => {
+  const announcements =[];
   for(let i = 1; i <= 10; i++){
-    offers.push(createOffer(i));
+    announcements.push(createAnnouncement(i));
   }
-  return offers;
-}
-getOffersArray();
+  return announcements;
+};
+getAnnouncementsList();
