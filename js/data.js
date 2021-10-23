@@ -65,14 +65,4 @@ const createAnnouncement = (userID) => {
   return announcement;
 };
 
-const getAnnouncementsList = () => {
-  const announcements =[];
-  for(let i = 1; i <= 10; i++){
-    announcements.push(createAnnouncement(i));
-  }
-  return announcements;
-};
-getAnnouncementsList();
-
-
-export {getAnnouncementsList};
+export {createAnnouncement};
