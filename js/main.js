@@ -1,7 +1,7 @@
 import {createAnnouncement} from './data.js';
-import {renderOffer} from './similar-elements.js';
+import {render} from './announcement.js';
 const cardsList = document.querySelector('.map__canvas');
-cardsList.appendChild(renderOffer(createAnnouncement(1)));
+cardsList.appendChild(render(createAnnouncement(1)));
 
 // const getAnnouncementsList = () => {
 //   const announcements =[];
