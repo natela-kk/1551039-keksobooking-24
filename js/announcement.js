@@ -39,6 +39,22 @@ const render = (announcement) => {
   } else {
     cardElement.querySelector('.popup__features').textContent = offer.features;
   }
+  const featuresList = cardElement.querySelectorAll('.popup__feature');
+  featuresList.forEach((feature) => {
+    const isNecessary = offer.features.some((offerFeature) => {
+      feature.classList.contains(`popup__feature--${offerFeature}`);
+    });
+
+    if(!isNecessary){
+      feature.remove();
+    }
+  });
+  // cardElement.querySelector('.popup__feature--wifi').value = 'wifi';
+  // cardElement.querySelector('.popup__feature--dishwasher').textContent = 'посудомойка';
+  // cardElement.querySelector('.popup__feature--parking').textContent = 'посудомойка';
+  // cardElement.querySelector('.popup__feature--washer').textContent = 'посудомойка';
+  // cardElement.querySelector('.popup__feature--elevator').textContent = 'посудомойка';
+  // cardElement.querySelector('.popup__feature--conditioner').textContent = 'посудомойка';
 
   if (!offer.description || !offer.description.length) {
     cardElement.querySelector('.popup__description').classList.add('hidden');
