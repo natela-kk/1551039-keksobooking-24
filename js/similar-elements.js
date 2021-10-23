@@ -4,9 +4,9 @@ const cardTemplate = document.querySelector('#card').content.querySelector('.pop
 
 const similarAnnouncments = getAnnouncementsList();
 const cardsList = document.querySelector('.map__canvas');
-const renderOffer = () => {
+const renderOffer = (i) => {
   const cardElement = cardTemplate.cloneNode(true);
-  const offer = similarAnnouncments[1].offer;
+  const offer = similarAnnouncments[i].offer;
   cardElement.querySelector('.popup__title').textContent = offer.title;
   if (!offer.address || !offer.address.length) {
     cardElement.querySelector('.popup__text--address').classList.add('hidden');
@@ -56,11 +56,11 @@ const renderOffer = () => {
     cardElement.querySelector('.popup__photos').classList.add('hidden');
   } else {cardElement.querySelector('.popup__photos').innerHTML = getPopupPhotos();
   }
-  if (!similarAnnouncments[1].author.avatar || !similarAnnouncments[1].author.avatar.length) {
+  if (!similarAnnouncments[i].author.avatar || !similarAnnouncments[i].author.avatar.length) {
     cardElement.querySelector('.popup__avatar').classList.add('hidden');
-  } else {cardElement.querySelector('.popup__avatar').src = similarAnnouncments[1].author.avatar;
+  } else {cardElement.querySelector('.popup__avatar').src = similarAnnouncments[i].author.avatar;
   }
   cardsList.appendChild(cardElement);
 };
-renderOffer();
+renderOffer(1);
 export {cardsList};
