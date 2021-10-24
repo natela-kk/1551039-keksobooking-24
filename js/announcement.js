@@ -46,13 +46,6 @@ const render = (announcement) => {
       }
     });
   }
-  // cardElement.querySelector('.popup__feature--wifi').value = 'wifi';
-  // cardElement.querySelector('.popup__feature--dishwasher').textContent = 'посудомойка';
-  // cardElement.querySelector('.popup__feature--parking').textContent = 'посудомойка';
-  // cardElement.querySelector('.popup__feature--washer').textContent = 'посудомойка';
-  // cardElement.querySelector('.popup__feature--elevator').textContent = 'посудомойка';
-  // cardElement.querySelector('.popup__feature--conditioner').textContent = 'посудомойка';
-
   if (!offer.description || !offer.description.length) {
     cardElement.querySelector('.popup__description').classList.add('hidden');
   } else {
