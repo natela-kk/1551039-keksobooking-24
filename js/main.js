@@ -1,6 +1,6 @@
 import {createAnnouncement} from './data.js';
 import {render} from './announcement.js';
-import {switchFormState} from './form-state.js';
+import {switchFormState} from './form.js';
 const cardsList = document.querySelector('.map__canvas');
 cardsList.appendChild(render(createAnnouncement(1)));
 switchFormState(true);
