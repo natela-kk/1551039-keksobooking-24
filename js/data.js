@@ -8,9 +8,9 @@ const ALL_PHOTOS = ['https://assets.htmlacademy.ru/content/intensive/javascript-
 
 const generateFeatures = () => {
   const features = [];
-  const newLength = getRandomInteger(1, ALL_FEATURES.length);
+  const newLength = getRandomInteger(0, ALL_FEATURES.length - 1);
   for (let i = 0; i <= newLength; i++){
-    const newFeature = ALL_FEATURES[getRandomInteger(1, ALL_FEATURES.length - 1)];
+    const newFeature = ALL_FEATURES[getRandomInteger(0, ALL_FEATURES.length - 1)];
     if(!features.includes(newFeature)){
       features.push(newFeature);
     }
@@ -20,9 +20,9 @@ const generateFeatures = () => {
 
 const generatePhotos = () => {
   const photos = [];
-  const newLength = getRandomInteger(1, ALL_PHOTOS.length);
+  const newLength = getRandomInteger(0, ALL_PHOTOS.length - 1);
   for (let i = 0; i <= newLength; i++){
-    const newPhoto = ALL_PHOTOS[getRandomInteger(1, ALL_PHOTOS.length - 1)];
+    const newPhoto = ALL_PHOTOS[getRandomInteger(0, ALL_PHOTOS.length - 1)];
     if(!photos.includes(newPhoto)){
       photos.push(newPhoto);
     }
