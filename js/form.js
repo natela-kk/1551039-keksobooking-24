@@ -45,6 +45,42 @@ roomNumber.addEventListener('change', () => {
   validateRoomsCapacity();
 });
 
+const price = document.querySelector('#price');
+const type = document.querySelector('#type');
+
+
+type.addEventListener('change', () => {
+  if (type.value === 'bungalow') {
+    price.setAttribute('min', 0);
+    price.setAttribute('placeholder', 0);
+  } else if (type.value === 'flat') {
+    price.setAttribute('min', 1000);
+    price.setAttribute('placeholder', 1000);
+  } else if (type.value === 'hotel') {
+    price.setAttribute('min', 3000);
+    price.setAttribute('placeholder', 3000);
+  } else if (type.value === 'house') {
+    price.setAttribute('min', 5000);
+    price.setAttribute('placeholder', 5000);
+  } else if (type.value === 'palace') {
+    price.setAttribute('min', 10000);
+    price.setAttribute('placeholder', 10000);
+  }
+  price.reportValidity();
+});
+
+const checkIn = document.querySelector('#timein');
+const checkOut = document.querySelector('#timeout');
+
+checkIn.addEventListener('change', () => {
+  checkOut.value = checkIn.value;
+});
+checkOut.addEventListener('change', () => {
+  checkIn.value = checkOut.value;
+});
+if (type.value === 'flat') {
+  price.setAttribute('min', 1000);
+}
 validateRoomsCapacity();
 
 export {switchState};
