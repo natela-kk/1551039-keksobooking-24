@@ -12,7 +12,6 @@ const switchState = (boolean) => {
 
 
 const MIN_TITLE_LENGTH = 30;
-const MAX_TITLE_LENGTH = 100;
 const title = document.querySelector('#title');
 
 title.addEventListener('input', () => {
@@ -20,8 +19,6 @@ title.addEventListener('input', () => {
 
   if (titleLength < MIN_TITLE_LENGTH) {
     title.setCustomValidity(`Ещё ${MIN_TITLE_LENGTH - titleLength} симв.`);
-  } else if (titleLength > MAX_TITLE_LENGTH) {
-    title.setCustomValidity(`Удалите лишние ${  titleLength - MAX_TITLE_LENGTH } симв.`);
   } else {
     title.setCustomValidity('');
   }
@@ -39,10 +36,15 @@ const validateRoomsCapacity = () => {
   }
   guestsNumber.reportValidity();
 };
-validateRoomsCapacity();
+
 
 guestsNumber.addEventListener('change', () => {
   validateRoomsCapacity();
 });
+roomNumber.addEventListener('change', () => {
+  validateRoomsCapacity();
+});
+
+validateRoomsCapacity();
 
 export {switchState};
