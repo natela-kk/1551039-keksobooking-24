@@ -10,4 +10,41 @@ const switchState = (boolean) => {
   });
 };
 
+
+const MIN_TITLE_LENGTH = 30;
+const title = document.querySelector('#title');
+
+title.addEventListener('input', () => {
+  const titleLength = title.value.length;
+
+  if (titleLength < MIN_TITLE_LENGTH) {
+    title.setCustomValidity(`Ещё ${MIN_TITLE_LENGTH - titleLength} симв.`);
+  } else {
+    title.setCustomValidity('');
+  }
+  title.reportValidity();
+});
+
+const roomNumber = document.querySelector('#room_number');
+const guestsNumber = document.querySelector('#capacity');
+
+const validateRoomsCapacity = () => {
+  if ((roomNumber.value !== '100' && (Number(guestsNumber.value) > Number(roomNumber.value) || guestsNumber.value === '0')) || (roomNumber.value === '100' && guestsNumber.value !== '0')) {
+    guestsNumber.setCustomValidity('Неверное значение');
+  } else {
+    guestsNumber.setCustomValidity('');
+  }
+  guestsNumber.reportValidity();
+};
+
+
+guestsNumber.addEventListener('change', () => {
+  validateRoomsCapacity();
+});
+roomNumber.addEventListener('change', () => {
+  validateRoomsCapacity();
+});
+
+validateRoomsCapacity();
+
 export {switchState};
