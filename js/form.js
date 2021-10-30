@@ -29,37 +29,28 @@ title.addEventListener('input', () => {
 });
 
 const roomNumber = document.querySelector('#room_number');
-const gestsNumber = document.querySelector('#capacity');
-const gestOptions = gestsNumber.querySelectorAll('option');
+const guestsNumber = document.querySelector('#capacity');
+const guestOptions = guestsNumber.querySelectorAll('option');
+
 roomNumber.addEventListener('change', () => {
-  if (roomNumber.value === '3') {
-    gestOptions.forEach((option) => {
-      option.disabled = false;
-      if (option.value === '0') {
-        option.disabled = true;
-      }
-    });
-  } else if (roomNumber.value === '2') {
-    gestOptions.forEach((option) => {
-      option.disabled = false;
-      if (option.value === '0' || option.value === '3') {
-        option.disabled = true;
-      }
-    });
-  } else if (roomNumber.value === '1') {
-    gestOptions.forEach((option) => {
-      option.disabled = false;
-      if (option.value === '3' || option.value === '2' || option.value === '0') {
-        option.disabled = true;
-      }
-    });
-  } else if (roomNumber.value === '100') {
-    gestOptions.forEach((option) => {
-      option.disabled = false;
-      if (option.value === '3' || option.value === '2' || option.value === '1') {
-        option.disabled = true;
-      }
-    });
+  for (let i = 0; i < guestOptions.length; i++) {
+    if (guestOptions[i].value !== '0') {
+      // guestsNumber.setCustomValidity('неверное значение');
+
+      guestOptions[i].disabled = (roomNumber.value === '100' && guestOptions[i].value !== '0') || (roomNumber.value !== '100' && (Number(roomNumber.value) < Number(guestOptions[i].value) || guestOptions[i].value === '0'));
+    }
+  }
+});
+
+ad.addEventListener('submit', (evt) => {
+  console.log(Number(roomNumber.value));
+  console.log(Number(guestsNumber.value));
+
+  if (Number(roomNumber.value) < Number(guestsNumber.value)) {
+    guestsNumber.setCustomValidity('неверное значение');
+    evt.preventDefault();
+  } else {
+    guestsNumber.setCustomValidity ('');
   }
 });
 
