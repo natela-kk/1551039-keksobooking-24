@@ -50,13 +50,8 @@ guestsNumber.addEventListener('change', () => {
   validateRoomsCapacity(guestsNumber);
 });
 
-ad.addEventListener('submit', (evt) => {
-  if (Number(roomNumber.value) < Number(guestsNumber.value)) {
-    guestsNumber.setCustomValidity('неверное значение');
-    evt.preventDefault();
-  } else {
-    guestsNumber.setCustomValidity ('');
-  }
+ad.addEventListener('submit', () => {
+  validateRoomsCapacity(roomNumber);
 });
 
 export {switchState};
