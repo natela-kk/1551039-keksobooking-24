@@ -30,28 +30,19 @@ title.addEventListener('input', () => {
 
 const roomNumber = document.querySelector('#room_number');
 const guestsNumber = document.querySelector('#capacity');
-const guestOptions = guestsNumber.querySelectorAll('option');
 
-const validateRoomsCapacity = (select) => {
-  for (let i = 0; i < guestOptions.length; i++) {
-    if ((roomNumber.value !== '100' && (Number(guestsNumber.value) > Number(roomNumber.value) || guestsNumber.value === '0')) || (roomNumber.value === '100' && guestsNumber.value !== '0')) {
-      select.setCustomValidity('Неверное значение');
-    } else {
-      select.setCustomValidity('');
-    }
-    select.reportValidity();
+const validateRoomsCapacity = () => {
+  if ((roomNumber.value !== '100' && (Number(guestsNumber.value) > Number(roomNumber.value) || guestsNumber.value === '0')) || (roomNumber.value === '100' && guestsNumber.value !== '0')) {
+    guestsNumber.setCustomValidity('Неверное значение');
+  } else {
+    guestsNumber.setCustomValidity('');
   }
+  guestsNumber.reportValidity();
 };
+validateRoomsCapacity();
 
-roomNumber.addEventListener('change', () => {
-  validateRoomsCapacity(roomNumber);
-});
 guestsNumber.addEventListener('change', () => {
-  validateRoomsCapacity(guestsNumber);
-});
-
-ad.addEventListener('submit', () => {
-  validateRoomsCapacity(roomNumber);
+  validateRoomsCapacity();
 });
 
 export {switchState};
