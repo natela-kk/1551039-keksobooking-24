@@ -34,18 +34,31 @@ const guestOptions = guestsNumber.querySelectorAll('option');
 
 roomNumber.addEventListener('change', () => {
   for (let i = 0; i < guestOptions.length; i++) {
-    if (guestOptions[i].value !== '0') {
-      // guestsNumber.setCustomValidity('неверное значение');
-
-      guestOptions[i].disabled = (roomNumber.value === '100' && guestOptions[i].value !== '0') || (roomNumber.value !== '100' && (Number(roomNumber.value) < Number(guestOptions[i].value) || guestOptions[i].value === '0'));
+    if (roomNumber.value !== '100' && (Number(guestsNumber.value) > Number(roomNumber.value) || guestsNumber.value === '0')) {
+      roomNumber.setCustomValidity('Неверное значение');
+    } else if (roomNumber.value === '100' && guestsNumber.value !== '0') {
+      roomNumber.setCustomValidity('Неверное значение');
+    } else {
+      roomNumber.setCustomValidity('');
     }
+    roomNumber.reportValidity();
+  }
+});
+
+guestsNumber.addEventListener('change', () => {
+  for (let i = 0; i < guestOptions.length; i++) {
+    if (roomNumber.value !== '100' && (Number(guestsNumber.value) > Number(roomNumber.value) || guestsNumber.value === '0')) {
+      guestsNumber.setCustomValidity('Неверное значение');
+    } else if (roomNumber.value === '100' && guestsNumber.value !== '0') {
+      guestsNumber.setCustomValidity('Неверное значение');
+    } else {
+      guestsNumber.setCustomValidity('');
+    }
+    guestsNumber.reportValidity();
   }
 });
 
 ad.addEventListener('submit', (evt) => {
-  console.log(Number(roomNumber.value));
-  console.log(Number(guestsNumber.value));
-
   if (Number(roomNumber.value) < Number(guestsNumber.value)) {
     guestsNumber.setCustomValidity('неверное значение');
     evt.preventDefault();
