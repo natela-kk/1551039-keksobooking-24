@@ -32,30 +32,22 @@ const roomNumber = document.querySelector('#room_number');
 const guestsNumber = document.querySelector('#capacity');
 const guestOptions = guestsNumber.querySelectorAll('option');
 
-roomNumber.addEventListener('change', () => {
+const validateRoomsCapacity = (select) => {
   for (let i = 0; i < guestOptions.length; i++) {
-    if (roomNumber.value !== '100' && (Number(guestsNumber.value) > Number(roomNumber.value) || guestsNumber.value === '0')) {
-      roomNumber.setCustomValidity('Неверное значение');
-    } else if (roomNumber.value === '100' && guestsNumber.value !== '0') {
-      roomNumber.setCustomValidity('Неверное значение');
+    if ((roomNumber.value !== '100' && (Number(guestsNumber.value) > Number(roomNumber.value) || guestsNumber.value === '0')) || (roomNumber.value === '100' && guestsNumber.value !== '0')) {
+      select.setCustomValidity('Неверное значение');
     } else {
-      roomNumber.setCustomValidity('');
+      select.setCustomValidity('');
     }
-    roomNumber.reportValidity();
+    select.reportValidity();
   }
-});
+};
 
+roomNumber.addEventListener('change', () => {
+  validateRoomsCapacity(roomNumber);
+});
 guestsNumber.addEventListener('change', () => {
-  for (let i = 0; i < guestOptions.length; i++) {
-    if (roomNumber.value !== '100' && (Number(guestsNumber.value) > Number(roomNumber.value) || guestsNumber.value === '0')) {
-      guestsNumber.setCustomValidity('Неверное значение');
-    } else if (roomNumber.value === '100' && guestsNumber.value !== '0') {
-      guestsNumber.setCustomValidity('Неверное значение');
-    } else {
-      guestsNumber.setCustomValidity('');
-    }
-    guestsNumber.reportValidity();
-  }
+  validateRoomsCapacity(guestsNumber);
 });
 
 ad.addEventListener('submit', (evt) => {
