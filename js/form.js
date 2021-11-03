@@ -69,5 +69,5 @@ checkOut.addEventListener('change', () => {
 });
 getPrice();
 validateRoomsCapacity();
-
+switchState(true);
 export {switchState};
