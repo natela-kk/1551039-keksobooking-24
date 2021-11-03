@@ -62,8 +62,7 @@ mainPinMarker.on('moveend', (evt) => {
   address.value = `${targetCoordinates.lat.toFixed(DIGITS)}, ${targetCoordinates.lng.toFixed(DIGITS)}`;
 });
 
-const createPinMarker = (i) => {
-  const announcement = createAnnouncement(i);
+const createPinMarker = (announcement) => {
   const createCustomPopup = () => render(announcement);
   const coordinates = announcement.location;
   const pinMarker = L.marker(
@@ -78,8 +77,5 @@ const createPinMarker = (i) => {
   pinMarker.addTo(map)
     .bindPopup(createCustomPopup());
 };
-for(let i = 1; i <= 11; i++) {
-  createPinMarker(i);
-}
 
-export {map};
+export {createPinMarker};
