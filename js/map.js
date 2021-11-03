@@ -1,18 +1,15 @@
 import {switchState} from './form.js';
 import {createAnnouncement} from './data.js';
 import {render} from './announcement.js';
-const TOKYO_COORDINATES = {
+const TokyoCoordinates = {
   lat: 35.6895,
   lng: 139.692,
 };
-const PIN_SIZES = {
+const PinSizes = {
   pinIcon: 40,
   mainPinIcon: 52,
 };
-const PIN_ANCHORS = {
-  pinIcon: [20, 40],
-  mainPinIcon: [26, 52],
-};
+
 const SCALE = 10;
 const DIGITS = 5;
 
@@ -22,8 +19,8 @@ const map = L.map('map-canvas')
     switchState(false);
   })
   .setView({
-    lat: TOKYO_COORDINATES.lat,
-    lng: TOKYO_COORDINATES.lng,
+    lat: TokyoCoordinates.lat,
+    lng: TokyoCoordinates.lng,
   }, SCALE);
 
 L.tileLayer(
@@ -36,14 +33,14 @@ L.tileLayer(
 
 const mainPinIcon = L.icon({
   iconUrl: 'img/main-pin.svg',
-  iconSize: PIN_SIZES.mainPinIcon,
-  iconAnchor: PIN_ANCHORS.mainPinIcon,
+  iconSize: PinSizes.mainPinIcon,
+  iconAnchor: [PinSizes.mainPinIcon/2, PinSizes.mainPinIcon],
 });
 
 const mainPinMarker = L.marker(
   {
-    lat: TOKYO_COORDINATES.lat,
-    lng: TOKYO_COORDINATES.lng,
+    lat: TokyoCoordinates.lat,
+    lng: TokyoCoordinates.lng,
   },
   {
     draggable: true,
@@ -54,24 +51,25 @@ mainPinMarker.addTo(map);
 
 const pinIcon = L.icon({
   iconUrl: 'img/pin.svg',
-  iconSize: PIN_SIZES.pinIcon,
-  iconAnchor: PIN_ANCHORS.pinIcon,
+  iconSize: PinSizes.pinIcon,
+  iconAnchor: [PinSizes.pinIcon/2, PinSizes.pinIcon],
 });
 
 address.value = `${mainPinMarker.getLatLng().lat.toFixed(DIGITS)}, ${mainPinMarker.getLatLng().lng.toFixed(DIGITS)}`;
 
 mainPinMarker.on('moveend', (evt) => {
-  address.value = `${evt.target.getLatLng().lat.toFixed(5)}, ${evt.target.getLatLng().lng.toFixed(5)}`;
+  const targetCoordinates = evt.target.getLatLng();
+  address.value = `${targetCoordinates.lat.toFixed(DIGITS)}, ${targetCoordinates.lng.toFixed(DIGITS)}`;
 });
 
 const createPinMarker = (i) => {
   const announcement = createAnnouncement(i);
   const createCustomPopup = () => render(announcement);
-  const latLng = announcement.location;
+  const coordinates = announcement.location;
   const pinMarker = L.marker(
     {
-      lat: latLng.lat,
-      lng: latLng.lng,
+      lat: coordinates.lat,
+      lng: coordinates.lng,
     },
     {
       icon: pinIcon,
