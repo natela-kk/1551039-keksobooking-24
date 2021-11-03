@@ -1,5 +1,4 @@
 import {switchState} from './form.js';
-import {createAnnouncement} from './data.js';
 import {render} from './announcement.js';
 const TokyoCoordinates = {
   lat: 35.6895,
