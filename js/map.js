@@ -78,3 +78,4 @@ const createPinMarker = (announcement) => {
 };
 
 export {createPinMarker};
+export {map, TokyoCoordinates, SCALE, mainPinMarker, address, DIGITS};

@@ -1,3 +1,8 @@
+import {mainPinMarker} from './map.js';
+import {map} from './map.js';
+import {TokyoCoordinates} from './map.js';
+import {SCALE} from './map.js';
+import {DIGITS} from './map.js';
 const MIN_TITLE_LENGTH = 30;
 const ad = document.querySelector('.ad-form');
 const controls = document.querySelectorAll('.ad-form-header, .ad-form__element, .map__filter');
@@ -9,6 +14,10 @@ const roomNumber = document.querySelector('#room_number');
 const guestsNumber = document.querySelector('#capacity');
 const price = document.querySelector('#price');
 const type = document.querySelector('#type');
+const address = document.querySelector('#address');
+const successMessageTemplate = document.querySelector('#success').content.querySelector('.success');
+const errorMessageTemplate = document.querySelector('#error').content.querySelector('.error');
+const errorButton = document.querySelector('.error__button');
 const TypePrice = {
   bungalow: 0,
   flat: 1000,
@@ -24,6 +33,37 @@ const switchState = (boolean) => {
     fieldset.disabled = boolean;
   });
 };
+
+const showSuccessMessage = () => {
+  const successMessage = successMessageTemplate.cloneNode(true);
+  document.body.appendChild(successMessage);
+  document.addEventListener('keydown', (evt) => {
+    const key = evt.key;
+    if (key === 'Escape') {
+      successMessage.remove();
+    }
+  });
+  document.body.addEventListener('click', () => {
+    successMessage.remove();
+  });
+};
+const showErrorMessage = () => {
+  const errorMessage = errorMessageTemplate.cloneNode(true);
+  document.body.appendChild(errorMessage);
+  document.addEventListener('keydown', (evt) => {
+    const key = evt.key;
+    if (key === 'Escape') {
+      errorMessage.remove();
+    }
+  });
+  document.body.addEventListener('click', () => {
+    errorMessage.remove();
+  });
+  errorButton.addEventListener('click', () => {
+    errorMessage.remove();
+  });
+};
+
 
 title.addEventListener('input', () => {
   const titleLength = title.value.length;
@@ -70,4 +110,47 @@ checkOut.addEventListener('change', () => {
 getPrice();
 validateRoomsCapacity();
 switchState(true);
+
+const resetData = () => {
+  ad.reset();
+  map.setView({
+    lat: TokyoCoordinates.lat,
+    lng: TokyoCoordinates.lng,
+  }, SCALE);
+  mainPinMarker.setLatLng({
+    lat: TokyoCoordinates.lat,
+    lng: TokyoCoordinates.lng,
+  });
+  address.value = `${mainPinMarker.getLatLng().lat.toFixed(DIGITS)}, ${mainPinMarker.getLatLng().lng.toFixed(DIGITS)}`;
+  map.closePopup();
+};
+document.querySelector('.ad-form__reset').addEventListener('click', () => {
+  resetData();
+});
+
+ad.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+
+  const formData = new FormData(evt.target);
+
+  fetch(
+    'https://24.javascript.pages.academy/keksobooking',
+    {
+      method: 'POST',
+      body: formData,
+    },
+  )
+    .then(() => {
+      showSuccessMessage();
+    })
+    .then(() => {
+      resetData();
+    })
+    .catch(() => {
+      showErrorMessage();
+    });
+
+});
+
 export {switchState};
+
