@@ -47,20 +47,15 @@ const resetData = () => {
   address.value = `${mainPinMarker.getLatLng().lat.toFixed(DIGITS)}, ${mainPinMarker.getLatLng().lng.toFixed(DIGITS)}`;
 };
 
-ad.addEventListener('reset', (evt) => {
+document.querySelector('.ad-form__reset').addEventListener('click', (evt) => {
   evt.preventDefault();
   resetData();
 });
-// document.querySelector('.ad-form__reset').addEventListener('click', () => {
-//   ad.reset();
-
-// });
 
 const showMessage = (response) => {
   let message;
   if(response.status === 200) {
     message = successMessageTemplate.cloneNode(true);
-    // ad.reset();
     resetData();
 
   } else {
