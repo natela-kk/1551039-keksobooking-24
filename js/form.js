@@ -82,7 +82,7 @@ const showMessage = (response) => {
 
 title.addEventListener('input', () => {
   const titleLength = title.value.length;
-  title.setCustomValidity( titleLength < MIN_TITLE_LENGTH ?`Ещё ${MIN_TITLE_LENGTH - titleLength} симв.` : '');
+  title.setCustomValidity(titleLength < MIN_TITLE_LENGTH ? `Ещё ${MIN_TITLE_LENGTH - titleLength} симв.` : '');
   title.reportValidity();
 });
 
