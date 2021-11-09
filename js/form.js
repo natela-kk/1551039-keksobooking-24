@@ -1,3 +1,8 @@
+import {mainPinMarker} from './map.js';
+import {map} from './map.js';
+import {TokyoCoordinates} from './map.js';
+import {SCALE} from './map.js';
+import {DIGITS} from './map.js';
 const MIN_TITLE_LENGTH = 30;
 const ad = document.querySelector('.ad-form');
 const controls = document.querySelectorAll('.ad-form-header, .ad-form__element, .map__filter');
@@ -9,6 +14,9 @@ const roomNumber = document.querySelector('#room_number');
 const guestsNumber = document.querySelector('#capacity');
 const price = document.querySelector('#price');
 const type = document.querySelector('#type');
+const address = document.querySelector('#address');
+const successMessageTemplate = document.querySelector('#success').content.querySelector('.success');
+const errorMessageTemplate = document.querySelector('#error').content.querySelector('.error');
 const TypePrice = {
   bungalow: 0,
   flat: 1000,
@@ -25,22 +33,63 @@ const switchState = (boolean) => {
   });
 };
 
+const resetData = () => {
+  map.setView({
+    lat: TokyoCoordinates.lat,
+    lng: TokyoCoordinates.lng,
+  }, SCALE);
+  mainPinMarker.setLatLng({
+    lat: TokyoCoordinates.lat,
+    lng: TokyoCoordinates.lng,
+  });
+  map.closePopup();
+  ad.reset();
+  address.value = `${mainPinMarker.getLatLng().lat.toFixed(DIGITS)}, ${mainPinMarker.getLatLng().lng.toFixed(DIGITS)}`;
+};
+
+document.querySelector('.ad-form__reset').addEventListener('click', (evt) => {
+  evt.preventDefault();
+  resetData();
+});
+
+let message;
+const closeMessageEscape = (evt) => {
+  const key = evt.key;
+  if (key === 'Escape') {
+    message.remove();
+    document.removeEventListener('keydown', closeMessageEscape);
+  }
+};
+
+const closeMessage = () => {
+  message.remove();
+  document.removeEventListener('click', closeMessage);
+};
+
+const showMessage = (response) => {
+  if(response.status === 200) {
+    message = successMessageTemplate.cloneNode(true);
+    resetData();
+
+  } else {
+    message = errorMessageTemplate.cloneNode(true);
+  }
+  document.body.appendChild(message);
+  document.addEventListener('keydown', closeMessageEscape);
+  document.addEventListener('click', closeMessage);
+};
+
+
 title.addEventListener('input', () => {
   const titleLength = title.value.length;
-
-  if (titleLength < MIN_TITLE_LENGTH) {
-    title.setCustomValidity(`Ещё ${MIN_TITLE_LENGTH - titleLength} симв.`);
-  } else {
-    title.setCustomValidity('');
-  }
+  title.setCustomValidity(titleLength < MIN_TITLE_LENGTH ? `Ещё ${MIN_TITLE_LENGTH - titleLength} симв.` : '');
   title.reportValidity();
 });
 
 const validateRoomsCapacity = () => {
+  guestsNumber.setCustomValidity('');
   if ((roomNumber.value !== '100' && (Number(guestsNumber.value) > Number(roomNumber.value) || guestsNumber.value === '0')) || (roomNumber.value === '100' && guestsNumber.value !== '0')) {
     guestsNumber.setCustomValidity('Неверное значение');
-  } else {
-    guestsNumber.setCustomValidity('');
   }
   guestsNumber.reportValidity();
 };
@@ -70,4 +119,6 @@ checkOut.addEventListener('change', () => {
 getPrice();
 validateRoomsCapacity();
 switchState(true);
-export {switchState};
+
+export {switchState, ad, showMessage};
+
