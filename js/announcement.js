@@ -1,18 +1,11 @@
 const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
 
-const getOfferType = (announcement) => {
-  switch (announcement.offer.type) {
-    case 'flat':
-      return 'Квартира';
-    case 'bungalow':
-      return 'Бунгало';
-    case 'house':
-      return 'Дом';
-    case 'palace':
-      return 'Дворец';
-    case 'hotel':
-      return 'Отель';
-  }
+const OfferTypes = {
+  flat: 'Квартира',
+  bungalow: 'Бунгало',
+  house: 'Дом',
+  palace: 'Дворец',
+  hotel: 'Отель',
 };
 
 const getPopupPhotos = (announcement) => announcement.offer.photos.reduce((previous, current) =>
@@ -21,16 +14,20 @@ const getPopupPhotos = (announcement) => announcement.offer.photos.reduce((previ
 const render = (announcement) => {
   const cardElement = cardTemplate.cloneNode(true);
   const offer = announcement.offer;
+  const popupAddress = cardElement.querySelector('.popup__text--address');
+  const popupDescription = cardElement.querySelector('.popup__description');
+  const popupPhotos = cardElement.querySelector('.popup__photos');
+  const popupAvatar = cardElement.querySelector('.popup__avatar');
   cardElement.querySelector('.popup__title').textContent = offer.title;
 
   if (!offer.address || !offer.address.length) {
-    cardElement.querySelector('.popup__text--address').classList.add('hidden');
+    popupAddress.classList.add('hidden');
   } else {
-    cardElement.querySelector('.popup__text--address').textContent = offer.address;
+    popupAddress.textContent = offer.address;
   }
 
   cardElement.querySelector('.popup__text--price').textContent = `${offer.price} ₽/ночь`;
-  cardElement.querySelector('.popup__type').textContent = getOfferType(announcement);
+  cardElement.querySelector('.popup__type').textContent = OfferTypes[offer.type];
   cardElement.querySelector('.popup__text--capacity').textContent = `${offer.rooms} комнаты для ${offer.guests} гостей`;
   cardElement.querySelector('.popup__text--time').textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`;
 
@@ -47,21 +44,21 @@ const render = (announcement) => {
     });
   }
   if (!offer.description || !offer.description.length) {
-    cardElement.querySelector('.popup__description').classList.add('hidden');
+    popupDescription.classList.add('hidden');
   } else {
-    cardElement.querySelector('.popup__description').textContent = offer.description;
+    popupDescription.textContent = offer.description;
   }
 
   if (!offer.photos || !offer.photos.length) {
-    cardElement.querySelector('.popup__photos').classList.add('hidden');
+    popupPhotos.classList.add('hidden');
   } else {
-    cardElement.querySelector('.popup__photos').innerHTML = getPopupPhotos(announcement);
+    popupPhotos.innerHTML = getPopupPhotos(announcement);
   }
 
   if (!announcement.author.avatar || !announcement.author.avatar.length) {
-    cardElement.querySelector('.popup__avatar').classList.add('hidden');
+    popupAvatar.classList.add('hidden');
   } else {
-    cardElement.querySelector('.popup__avatar').src = announcement.author.avatar;
+    popupAvatar.src = announcement.author.avatar;
   }
   return cardElement;
 };

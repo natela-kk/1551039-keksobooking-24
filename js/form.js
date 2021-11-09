@@ -52,8 +52,21 @@ document.querySelector('.ad-form__reset').addEventListener('click', (evt) => {
   resetData();
 });
 
+let message;
+const closeMessageEscape = (evt) => {
+  const key = evt.key;
+  if (key === 'Escape') {
+    message.remove();
+    document.removeEventListener('keydown', closeMessageEscape);
+  }
+};
+
+const closeMessage = () => {
+  message.remove();
+  document.removeEventListener('click', closeMessage);
+};
+
 const showMessage = (response) => {
-  let message;
   if(response.status === 200) {
     message = successMessageTemplate.cloneNode(true);
     resetData();
@@ -62,34 +75,21 @@ const showMessage = (response) => {
     message = errorMessageTemplate.cloneNode(true);
   }
   document.body.appendChild(message);
-  document.addEventListener('keydown', (evt) => {
-    const key = evt.key;
-    if (key === 'Escape') {
-      message.remove();
-    }
-  });
-  document.body.addEventListener('click', () => {
-    message.remove();
-  });
+  document.addEventListener('keydown', closeMessageEscape);
+  document.addEventListener('click', closeMessage);
 };
 
 
 title.addEventListener('input', () => {
   const titleLength = title.value.length;
-
-  if (titleLength < MIN_TITLE_LENGTH) {
-    title.setCustomValidity(`Ещё ${MIN_TITLE_LENGTH - titleLength} симв.`);
-  } else {
-    title.setCustomValidity('');
-  }
+  title.setCustomValidity( titleLength < MIN_TITLE_LENGTH ?`Ещё ${MIN_TITLE_LENGTH - titleLength} симв.` : '');
   title.reportValidity();
 });
 
 const validateRoomsCapacity = () => {
+  guestsNumber.setCustomValidity('');
   if ((roomNumber.value !== '100' && (Number(guestsNumber.value) > Number(roomNumber.value) || guestsNumber.value === '0')) || (roomNumber.value === '100' && guestsNumber.value !== '0')) {
     guestsNumber.setCustomValidity('Неверное значение');
-  } else {
-    guestsNumber.setCustomValidity('');
   }
   guestsNumber.reportValidity();
 };
