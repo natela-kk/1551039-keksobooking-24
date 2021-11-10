@@ -7,7 +7,6 @@ const SIMILAR_AD_COUNT = 10;
 fetch('https://24.javascript.pages.academy/keksobooking/data')
   .then((response) => response.json())
   .then((ads) => {
-    // console.log(ads);
     filterOffers(ads);
     createPinMarkers(ads.slice(0, SIMILAR_AD_COUNT));
   })
