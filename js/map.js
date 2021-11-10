@@ -60,22 +60,25 @@ mainPinMarker.on('moveend', (evt) => {
   const targetCoordinates = evt.target.getLatLng();
   address.value = `${targetCoordinates.lat.toFixed(DIGITS)}, ${targetCoordinates.lng.toFixed(DIGITS)}`;
 });
-
-const createPinMarker = (announcement) => {
-  const createCustomPopup = () => render(announcement);
-  const coordinates = announcement.location;
-  const pinMarker = L.marker(
-    {
-      lat: coordinates.lat,
-      lng: coordinates.lng,
-    },
-    {
-      icon: pinIcon,
-    },
-  );
-  pinMarker.addTo(map)
-    .bindPopup(createCustomPopup());
+const markerGroup = L.layerGroup().addTo(map);
+const createPinMarkers = (ads) => {
+  markerGroup.clearLayers();
+  ads.forEach((ad) => {
+    const createCustomPopup = () => render(ad);
+    const coordinates = ad.location;
+    const pinMarker = L.marker(
+      {
+        lat: coordinates.lat,
+        lng: coordinates.lng,
+      },
+      {
+        icon: pinIcon,
+      },
+    );
+    pinMarker.addTo(markerGroup)
+      .bindPopup(createCustomPopup());
+  });
 };
 
-export {createPinMarker};
+export {createPinMarkers};
 export {map, TokyoCoordinates, SCALE, mainPinMarker, address, DIGITS};
