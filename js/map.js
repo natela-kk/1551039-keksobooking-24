@@ -1,6 +1,6 @@
 import {switchState} from './form.js';
 import {render} from './announcement.js';
-const TokyoCoordinates = {
+const InitialCoordinates = {
   lat: 35.6895,
   lng: 139.692,
 };
@@ -18,8 +18,8 @@ const map = L.map('map-canvas')
     switchState(false);
   })
   .setView({
-    lat: TokyoCoordinates.lat,
-    lng: TokyoCoordinates.lng,
+    lat: InitialCoordinates.lat,
+    lng: InitialCoordinates.lng,
   }, SCALE);
 
 L.tileLayer(
@@ -38,8 +38,8 @@ const mainPinIcon = L.icon({
 
 const mainPinMarker = L.marker(
   {
-    lat: TokyoCoordinates.lat,
-    lng: TokyoCoordinates.lng,
+    lat: InitialCoordinates.lat,
+    lng: InitialCoordinates.lng,
   },
   {
     draggable: true,
@@ -80,5 +80,4 @@ const createPinMarkers = (ads) => {
   });
 };
 
-export {createPinMarkers};
-export {map, TokyoCoordinates, SCALE, mainPinMarker, address, DIGITS};
+export {createPinMarkers, map, InitialCoordinates, SCALE, mainPinMarker, address, DIGITS};

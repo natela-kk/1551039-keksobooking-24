@@ -1,11 +1,14 @@
 import {createPinMarkers} from './map.js';
 import {SIMILAR_AD_COUNT} from './server-requests.js';
+import {mapFilters} from './server-requests.js';
+import {debounce} from './utils/debounce.js';
+const DEFAULT_VALUE = 'any';
 const filterForm = document.querySelector('.map__filters');
 const type = filterForm.querySelector('#housing-type');
 const price = filterForm.querySelector('#housing-price');
 const roomsNumber = filterForm.querySelector('#housing-rooms');
-// const guestsNumber = filterForm.querySelector('#housing-guests');
-// const features = filterForm.querySelector('#housing-features');
+const guestsNumber = filterForm.querySelector('#housing-guests');
+const features = filterForm.querySelector('#housing-features');
 const priceValue = {
   any: {
     min: 0,
@@ -24,28 +27,26 @@ const priceValue = {
     max: Infinity,
   },
 };
-
-const filterOffers = (ads) => {
-  type.addEventListener('change', () => {
-    if (type.value === 'any') {
-      createPinMarkers(ads.slice(0, SIMILAR_AD_COUNT));
-    } else {
-      const filteredAds = ads.filter((ad) => ad.offer.type === type.value);
-      createPinMarkers(filteredAds.slice(0, SIMILAR_AD_COUNT));
-    }
-  });
-  price.addEventListener('change', () => {
-    const filteredAds = ads.filter((ad) => ad.offer.price > priceValue[price.value].min && ad.offer.price < priceValue[price.value].max);
-    createPinMarkers(filteredAds.slice(0, SIMILAR_AD_COUNT));
-  });
-  roomsNumber.addEventListener('change', () => {
-    if (roomsNumber.value === 'any') {
-      createPinMarkers(ads.slice(0, SIMILAR_AD_COUNT));
-    } else {
-      const filteredAds = ads.filter((ad) => ad.offer.rooms === roomsNumber.value);
-      createPinMarkers(filteredAds.slice(0, SIMILAR_AD_COUNT));
-    }
-  });
+const filterType = (ad) => type.value === DEFAULT_VALUE || type.value === ad.offer.type;
+const filterRooms = (ad) => roomsNumber.value === DEFAULT_VALUE || Number(roomsNumber.value) === ad.offer.rooms;
+const filterPrice = (ad) => ad.offer.price > priceValue[price.value].min && ad.offer.price < priceValue[price.value].max;
+const filterGuests = (ad) => guestsNumber.value === DEFAULT_VALUE || Number(guestsNumber.value) === ad.offer.guests;
+const filterFeatures = (ad) => {
+  const checkedFeatures = Array.from(features.querySelectorAll('input[type="checkbox"]:checked'));
+  if (!ad.offer.features && checkedFeatures.length > 0) {
+    return false;
+  }
+  return checkedFeatures.every((feature) => ad.offer.features.includes(feature.value));
 };
-export {filterOffers};
+
+const filterOffers = (ads) => ads.filter((ad) => filterType(ad) && filterRooms(ad) && filterPrice(ad) && filterGuests(ad) && filterFeatures(ad)).slice(0, SIMILAR_AD_COUNT);
+
+const getFilteredPins = (ads) => {
+  const filteredOffers = filterOffers(ads);
+  createPinMarkers(filteredOffers);
+};
+const setFilterListener = (ads) => {
+  mapFilters.addEventListener('change', debounce(() => getFilteredPins(ads)));
+};
+export {setFilterListener};
 
