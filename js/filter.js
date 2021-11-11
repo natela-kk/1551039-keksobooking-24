@@ -9,27 +9,27 @@ const price = filterForm.querySelector('#housing-price');
 const roomsNumber = filterForm.querySelector('#housing-rooms');
 const guestsNumber = filterForm.querySelector('#housing-guests');
 const features = filterForm.querySelector('#housing-features');
-const priceValue = {
-  any: {
+const PriceValue = {
+  ANY: {
     min: 0,
     max: Infinity,
   },
-  middle: {
+  MIDDLE: {
     min: 10000,
     max: 50000,
   },
-  low: {
+  LOW: {
     min: 0,
     max: 10000,
   },
-  high: {
+  HIGH: {
     min: 50000,
     max: Infinity,
   },
 };
 const filterType = (ad) => type.value === DEFAULT_VALUE || type.value === ad.offer.type;
 const filterRooms = (ad) => roomsNumber.value === DEFAULT_VALUE || Number(roomsNumber.value) === ad.offer.rooms;
-const filterPrice = (ad) => ad.offer.price > priceValue[price.value].min && ad.offer.price < priceValue[price.value].max;
+const filterPrice = (ad) => ad.offer.price > PriceValue[price.value].min && ad.offer.price < PriceValue[price.value].max;
 const filterGuests = (ad) => guestsNumber.value === DEFAULT_VALUE || Number(guestsNumber.value) === ad.offer.guests;
 const filterFeatures = (ad) => {
   const checkedFeatures = Array.from(features.querySelectorAll('input[type="checkbox"]:checked'));

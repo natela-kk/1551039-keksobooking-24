@@ -3,6 +3,7 @@ import {map} from './map.js';
 import {InitialCoordinates} from './map.js';
 import {SCALE} from './map.js';
 import {DIGITS} from './map.js';
+import {sendData} from './server-requests.js';
 const MIN_TITLE_LENGTH = 30;
 const adForm = document.querySelector('.ad-form');
 const controls = document.querySelectorAll('.ad-form-header, .ad-form__element');
@@ -64,7 +65,7 @@ const closeMessage = () => {
   document.removeEventListener('click', closeMessage);
 };
 
-const showMessage = (response) => {
+const sendSuccessData = (response) => {
   if(response.status === 200) {
     message = successMessageTemplate.cloneNode(true);
     resetData();
@@ -114,9 +115,14 @@ checkIn.addEventListener('change', () => {
 checkOut.addEventListener('change', () => {
   checkIn.value = checkOut.value;
 });
+
+adForm.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+  sendData();
+});
 getPrice();
 validateRoomsCapacity();
 switchState(true);
 
-export {switchState, adForm, showMessage};
+export {switchState, adForm, sendSuccessData};
 
