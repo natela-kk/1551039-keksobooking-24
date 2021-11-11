@@ -1,10 +1,12 @@
 import {getData} from './server-requests.js';
-import {sendData} from './server-requests.js';
 import {setFilterListener} from './filter.js';
 import {createPinMarkers} from './map.js';
 import {sendSuccessData} from './form.js';
+import {SIMILAR_AD_COUNT} from './filter.js';
+import {adForm} from './form.js';
+import './images.js';
 
-const SIMILAR_AD_COUNT = 10;
+
 const mapFilters = document.querySelector('.map__filters');
 const mapFilter = mapFilters.querySelector('.map__filter');
 
@@ -27,7 +29,7 @@ const getSuccessData = (ads) => {
   setFilterListener(ads);
 };
 switchFilterState(true);
-getData(getSuccessData);
-sendData(sendSuccessData);
+getData(getSuccessData, new FormData(adForm));
+sendSuccessData();
 
-export {getErrorMessage};
+export {getErrorMessage, mapFilters};

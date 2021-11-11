@@ -65,7 +65,7 @@ const closeMessage = () => {
   document.removeEventListener('click', closeMessage);
 };
 
-const sendSuccessData = (response) => {
+const onSuccess = (response) => {
   if(response.status === 200) {
     message = successMessageTemplate.cloneNode(true);
     resetData();
@@ -116,13 +116,15 @@ checkOut.addEventListener('change', () => {
   checkIn.value = checkOut.value;
 });
 
-adForm.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-  sendData();
-});
+const sendSuccessData = () => {
+  adForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    sendData(onSuccess, new FormData(adForm));
+  });
+};
 getPrice();
 validateRoomsCapacity();
 switchState(true);
 
-export {switchState, adForm, sendSuccessData};
+export {switchState, adForm, onSuccess, sendSuccessData};
 

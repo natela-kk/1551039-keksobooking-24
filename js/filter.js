@@ -1,8 +1,9 @@
 import {createPinMarkers} from './map.js';
-import {SIMILAR_AD_COUNT} from './server-requests.js';
-import {mapFilters} from './server-requests.js';
+import {mapFilters} from './main.js';
 import {debounce} from './utils/debounce.js';
 const DEFAULT_VALUE = 'any';
+const SIMILAR_AD_COUNT = 10;
+
 const filterForm = document.querySelector('.map__filters');
 const type = filterForm.querySelector('#housing-type');
 const price = filterForm.querySelector('#housing-price');
@@ -29,7 +30,7 @@ const PriceValue = {
 };
 const filterType = (ad) => type.value === DEFAULT_VALUE || type.value === ad.offer.type;
 const filterRooms = (ad) => roomsNumber.value === DEFAULT_VALUE || Number(roomsNumber.value) === ad.offer.rooms;
-const filterPrice = (ad) => ad.offer.price > PriceValue[price.value].min && ad.offer.price < PriceValue[price.value].max;
+const filterPrice = (ad) => ad.offer.price > PriceValue[price.value.toUpperCase()].min && ad.offer.price < PriceValue[price.value.toUpperCase()].max;
 const filterGuests = (ad) => guestsNumber.value === DEFAULT_VALUE || Number(guestsNumber.value) === ad.offer.guests;
 const filterFeatures = (ad) => {
   const checkedFeatures = Array.from(features.querySelectorAll('input[type="checkbox"]:checked'));
@@ -48,5 +49,5 @@ const getFilteredPins = (ads) => {
 const setFilterListener = (ads) => {
   mapFilters.addEventListener('change', debounce(() => getFilteredPins(ads)));
 };
-export {setFilterListener};
+export {setFilterListener, SIMILAR_AD_COUNT};
 

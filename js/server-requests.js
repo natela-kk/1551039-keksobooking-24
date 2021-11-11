@@ -1,5 +1,5 @@
 import {getErrorMessage} from './main.js';
-const formData = new FormData(evt.target);
+
 const getData = (onSuccess) => {
   fetch('https://24.javascript.pages.academy/keksobooking/data')
     .then((response) => response.json())
@@ -10,14 +10,10 @@ const getData = (onSuccess) => {
       getErrorMessage();
     });
 };
-const sendData = (onSuccess) => {
+const sendData = (onSuccess, body) => {
   fetch(
     'https://24.javascript.pages.academy/keksobooking',
-    {
-      method: 'POST',
-      body: formData,
-    },
-  )
+    {method: 'POST', body})
     .then((response) => {
       onSuccess(response);
     });
