@@ -46,8 +46,10 @@ const getFilteredPins = (ads) => {
   const filteredOffers = filterOffers(ads);
   createPinMarkers(filteredOffers);
 };
+
 const setFilterListener = (ads) => {
   mapFilters.addEventListener('change', debounce(() => getFilteredPins(ads)));
+  mapFilters.addEventListener('reset', debounce(() => getFilteredPins(ads)));
 };
 export {setFilterListener, SIMILAR_AD_COUNT};
 

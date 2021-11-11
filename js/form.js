@@ -1,9 +1,11 @@
 import {mainPinMarker} from './map.js';
 import {map} from './map.js';
+import {mapFilters} from './main.js';
 import {InitialCoordinates} from './map.js';
 import {SCALE} from './map.js';
 import {DIGITS} from './map.js';
 import {sendData} from './server-requests.js';
+import {resetImages} from './images.js';
 const MIN_TITLE_LENGTH = 30;
 const adForm = document.querySelector('.ad-form');
 const controls = document.querySelectorAll('.ad-form-header, .ad-form__element');
@@ -44,6 +46,8 @@ const resetData = () => {
   map.closePopup();
   adForm.reset();
   address.value = `${mainPinMarker.getLatLng().lat.toFixed(DIGITS)}, ${mainPinMarker.getLatLng().lng.toFixed(DIGITS)}`;
+  mapFilters.reset();
+  resetImages();
 };
 
 document.querySelector('.ad-form__reset').addEventListener('click', (evt) => {

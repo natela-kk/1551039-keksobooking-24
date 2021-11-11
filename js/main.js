@@ -2,7 +2,6 @@ import {getData} from './server-requests.js';
 import {setFilterListener} from './filter.js';
 import {createPinMarkers} from './map.js';
 import {SIMILAR_AD_COUNT} from './filter.js';
-import {adForm} from './form.js';
 import './images.js';
 
 
@@ -28,6 +27,6 @@ const getSuccessData = (ads) => {
   setFilterListener(ads);
 };
 switchFilterState(true);
-getData(getSuccessData, new FormData(adForm));
+getData(getSuccessData);
 
-export {getErrorMessage, mapFilters};
+export {getErrorMessage, mapFilters, mapFilter};
