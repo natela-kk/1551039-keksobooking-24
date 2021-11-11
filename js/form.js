@@ -116,15 +116,13 @@ checkOut.addEventListener('change', () => {
   checkIn.value = checkOut.value;
 });
 
-const sendSuccessData = () => {
-  adForm.addEventListener('submit', (evt) => {
-    evt.preventDefault();
-    sendData(onSuccess, new FormData(adForm));
-  });
-};
+adForm.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+  sendData(onSuccess, new FormData(adForm));
+});
 getPrice();
 validateRoomsCapacity();
 switchState(true);
 
-export {switchState, adForm, onSuccess, sendSuccessData};
+export {switchState, adForm, onSuccess};
 
