@@ -1,6 +1,6 @@
 import {switchState} from './form.js';
 import {render} from './announcement.js';
-const TokyoCoordinates = {
+const InitialCoordinates = {
   lat: 35.6895,
   lng: 139.692,
 };
@@ -18,8 +18,8 @@ const map = L.map('map-canvas')
     switchState(false);
   })
   .setView({
-    lat: TokyoCoordinates.lat,
-    lng: TokyoCoordinates.lng,
+    lat: InitialCoordinates.lat,
+    lng: InitialCoordinates.lng,
   }, SCALE);
 
 L.tileLayer(
@@ -38,8 +38,8 @@ const mainPinIcon = L.icon({
 
 const mainPinMarker = L.marker(
   {
-    lat: TokyoCoordinates.lat,
-    lng: TokyoCoordinates.lng,
+    lat: InitialCoordinates.lat,
+    lng: InitialCoordinates.lng,
   },
   {
     draggable: true,
@@ -60,22 +60,24 @@ mainPinMarker.on('moveend', (evt) => {
   const targetCoordinates = evt.target.getLatLng();
   address.value = `${targetCoordinates.lat.toFixed(DIGITS)}, ${targetCoordinates.lng.toFixed(DIGITS)}`;
 });
-
-const createPinMarker = (announcement) => {
-  const createCustomPopup = () => render(announcement);
-  const coordinates = announcement.location;
-  const pinMarker = L.marker(
-    {
-      lat: coordinates.lat,
-      lng: coordinates.lng,
-    },
-    {
-      icon: pinIcon,
-    },
-  );
-  pinMarker.addTo(map)
-    .bindPopup(createCustomPopup());
+const markerGroup = L.layerGroup().addTo(map);
+const createPinMarkers = (ads) => {
+  markerGroup.clearLayers();
+  ads.forEach((ad) => {
+    const createCustomPopup = () => render(ad);
+    const coordinates = ad.location;
+    const pinMarker = L.marker(
+      {
+        lat: coordinates.lat,
+        lng: coordinates.lng,
+      },
+      {
+        icon: pinIcon,
+      },
+    );
+    pinMarker.addTo(markerGroup)
+      .bindPopup(createCustomPopup());
+  });
 };
 
-export {createPinMarker};
-export {map, TokyoCoordinates, SCALE, mainPinMarker, address, DIGITS};
+export {createPinMarkers, map, InitialCoordinates, SCALE, mainPinMarker, address, DIGITS};

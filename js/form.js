@@ -1,12 +1,14 @@
 import {mainPinMarker} from './map.js';
 import {map} from './map.js';
-import {TokyoCoordinates} from './map.js';
+import {mapFilters} from './main.js';
+import {InitialCoordinates} from './map.js';
 import {SCALE} from './map.js';
 import {DIGITS} from './map.js';
+import {sendData} from './server-requests.js';
+import {resetImages} from './images.js';
 const MIN_TITLE_LENGTH = 30;
-const ad = document.querySelector('.ad-form');
-const controls = document.querySelectorAll('.ad-form-header, .ad-form__element, .map__filter');
-const mapFilters = document.querySelector('.map__filters');
+const adForm = document.querySelector('.ad-form');
+const controls = document.querySelectorAll('.ad-form-header, .ad-form__element');
 const checkIn = document.querySelector('#timein');
 const checkOut = document.querySelector('#timeout');
 const title = document.querySelector('#title');
@@ -26,8 +28,7 @@ const TypePrice = {
 };
 
 const switchState = (boolean) => {
-  ad.classList.toggle('ad-form--disabled', boolean);
-  mapFilters.classList.toggle('ad-form--disabled', boolean);
+  adForm.classList.toggle('ad-form--disabled', boolean);
   controls.forEach((fieldset) => {
     fieldset.disabled = boolean;
   });
@@ -35,16 +36,18 @@ const switchState = (boolean) => {
 
 const resetData = () => {
   map.setView({
-    lat: TokyoCoordinates.lat,
-    lng: TokyoCoordinates.lng,
+    lat: InitialCoordinates.lat,
+    lng: InitialCoordinates.lng,
   }, SCALE);
   mainPinMarker.setLatLng({
-    lat: TokyoCoordinates.lat,
-    lng: TokyoCoordinates.lng,
+    lat: InitialCoordinates.lat,
+    lng: InitialCoordinates.lng,
   });
   map.closePopup();
-  ad.reset();
+  adForm.reset();
   address.value = `${mainPinMarker.getLatLng().lat.toFixed(DIGITS)}, ${mainPinMarker.getLatLng().lng.toFixed(DIGITS)}`;
+  mapFilters.reset();
+  resetImages();
 };
 
 document.querySelector('.ad-form__reset').addEventListener('click', (evt) => {
@@ -66,7 +69,7 @@ const closeMessage = () => {
   document.removeEventListener('click', closeMessage);
 };
 
-const showMessage = (response) => {
+const onSuccess = (response) => {
   if(response.status === 200) {
     message = successMessageTemplate.cloneNode(true);
     resetData();
@@ -116,9 +119,14 @@ checkIn.addEventListener('change', () => {
 checkOut.addEventListener('change', () => {
   checkIn.value = checkOut.value;
 });
+
+adForm.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+  sendData(onSuccess, new FormData(adForm));
+});
 getPrice();
 validateRoomsCapacity();
 switchState(true);
 
-export {switchState, ad, showMessage};
+export {switchState, adForm, onSuccess};
 
