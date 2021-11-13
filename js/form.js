@@ -56,17 +56,19 @@ document.querySelector('.ad-form__reset').addEventListener('click', (evt) => {
 });
 
 let message;
-const closeMessageEscape = (evt) => {
+const onDocumentKeydown = (evt) => {
   const key = evt.key;
   if (key === 'Escape') {
     message.remove();
-    document.removeEventListener('keydown', closeMessageEscape);
+    document.removeEventListener('keydown', onDocumentKeydown);
   }
 };
 
-const closeMessage = () => {
+const onDocumentClick = () => {
   message.remove();
-  document.removeEventListener('click', closeMessage);
+  document.removeEventListener('click', onDocumentClick);
+  document.removeEventListener('keydown', onDocumentKeydown);
+
 };
 
 const onSuccess = (response) => {
@@ -78,8 +80,8 @@ const onSuccess = (response) => {
     message = errorMessageTemplate.cloneNode(true);
   }
   document.body.appendChild(message);
-  document.addEventListener('keydown', closeMessageEscape);
-  document.addEventListener('click', closeMessage);
+  document.addEventListener('keydown', onDocumentKeydown);
+  document.addEventListener('click', onDocumentClick);
 };
 
 
