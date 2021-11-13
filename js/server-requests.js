@@ -1,7 +1,9 @@
 import {getErrorMessage} from './main.js';
 
+const API_URL = 'https://24.javascript.pages.academy/keksobooking';
+
 const getData = (onSuccess) => {
-  fetch('https://24.javascript.pages.academy/keksobooking/data')
+  fetch(`${API_URL}/data`)
     .then((response) => response.json())
     .then((ads) => {
       onSuccess(ads);
@@ -10,12 +12,10 @@ const getData = (onSuccess) => {
       getErrorMessage();
     });
 };
-const sendData = (onSuccess, body) => {
-  fetch(
-    'https://24.javascript.pages.academy/keksobooking',
-    {method: 'POST', body})
+const sendData = (showSuccessMessage, body) => {
+  fetch(API_URL, {method: 'POST', body})
     .then((response) => {
-      onSuccess(response);
+      showSuccessMessage(response);
     });
 };
 

@@ -26,6 +26,7 @@ const TypePrice = {
   house: 5000,
   palace: 10000,
 };
+price.placeholder = TypePrice[type.value];
 
 const switchState = (boolean) => {
   adForm.classList.toggle('ad-form--disabled', boolean);
@@ -48,6 +49,7 @@ const resetData = () => {
   address.value = `${mainPinMarker.getLatLng().lat.toFixed(DIGITS)}, ${mainPinMarker.getLatLng().lng.toFixed(DIGITS)}`;
   mapFilters.reset();
   resetImages();
+  price.placeholder = TypePrice[type.value];
 };
 
 document.querySelector('.ad-form__reset').addEventListener('click', (evt) => {
@@ -68,14 +70,12 @@ const onDocumentClick = () => {
   message.remove();
   document.removeEventListener('click', onDocumentClick);
   document.removeEventListener('keydown', onDocumentKeydown);
-
 };
 
-const onSuccess = (response) => {
+const showSuccessMessage = (response) => {
   if(response.status === 200) {
     message = successMessageTemplate.cloneNode(true);
     resetData();
-
   } else {
     message = errorMessageTemplate.cloneNode(true);
   }
@@ -124,11 +124,11 @@ checkOut.addEventListener('change', () => {
 
 adForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
-  sendData(onSuccess, new FormData(adForm));
+  validateRoomsCapacity();
+  getPrice();
+  sendData(showSuccessMessage, new FormData(adForm));
 });
-getPrice();
-validateRoomsCapacity();
 switchState(true);
 
-export {switchState, adForm, onSuccess};
+export {switchState, adForm, showSuccessMessage};
 

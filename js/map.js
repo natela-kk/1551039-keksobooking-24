@@ -61,22 +61,25 @@ mainPinMarker.on('moveend', (evt) => {
   address.value = `${targetCoordinates.lat.toFixed(DIGITS)}, ${targetCoordinates.lng.toFixed(DIGITS)}`;
 });
 const markerGroup = L.layerGroup().addTo(map);
+const createPinMarker = (ad) => {
+  const createCustomPopup = () => render(ad);
+  const coordinates = ad.location;
+  const pinMarker = L.marker(
+    {
+      lat: coordinates.lat,
+      lng: coordinates.lng,
+    },
+    {
+      icon: pinIcon,
+    },
+  );
+  pinMarker.addTo(markerGroup)
+    .bindPopup(createCustomPopup());
+};
 const createPinMarkers = (ads) => {
   markerGroup.clearLayers();
   ads.forEach((ad) => {
-    const createCustomPopup = () => render(ad);
-    const coordinates = ad.location;
-    const pinMarker = L.marker(
-      {
-        lat: coordinates.lat,
-        lng: coordinates.lng,
-      },
-      {
-        icon: pinIcon,
-      },
-    );
-    pinMarker.addTo(markerGroup)
-      .bindPopup(createCustomPopup());
+    createPinMarker(ad);
   });
 };
 
