@@ -1,7 +1,8 @@
-import {getData} from './server-requests.js';
-import {setFilterListener} from './filter.js';
-import {createPinMarkers} from './map.js';
-import {SIMILAR_AD_COUNT} from './filter.js';
+// import {getData} from './server-requests.js';
+// import {setFilterListener} from './filter.js';
+// import {createPinMarkers} from './map.js';
+// import {SIMILAR_AD_COUNT} from './filter.js';
+import './map.js';
 import './images.js';
 
 
@@ -21,12 +22,12 @@ const switchFilterState = (boolean) => {
   mapFilters.classList.toggle('ad-form--disabled', boolean);
   mapFilter.disabled = boolean;
 };
-const getSuccessData = (ads) => {
-  createPinMarkers(ads.slice(0, SIMILAR_AD_COUNT));
-  switchFilterState(false);
-  setFilterListener(ads);
-};
+// const getSuccessData = (ads) => {
+//   createPinMarkers(ads.slice(0, SIMILAR_AD_COUNT));
+//   switchFilterState(false);
+//   setFilterListener(ads);
+// };
 switchFilterState(true);
-getData(getSuccessData);
+// getData(getSuccessData);
 
-export {getErrorMessage, mapFilters, mapFilter};
+export {getErrorMessage, mapFilters, mapFilter, switchFilterState};

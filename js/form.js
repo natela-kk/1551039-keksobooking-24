@@ -57,20 +57,24 @@ document.querySelector('.ad-form__reset').addEventListener('click', (evt) => {
   resetData();
 });
 
+
 let message;
+
 const onDocumentKeydown = (evt) => {
-  const key = evt.key;
-  if (key === 'Escape') {
-    message.remove();
-    document.removeEventListener('keydown', onDocumentKeydown);
+  if (evt.code === 'Escape') {
+    remove();
   }
 };
 
 const onDocumentClick = () => {
-  message.remove();
-  document.removeEventListener('click', onDocumentClick);
-  document.removeEventListener('keydown', onDocumentKeydown);
+  remove();
 };
+
+function remove() {
+  message.remove();
+  document.removeEventListener('keydown', onDocumentKeydown);
+  document.removeEventListener('click', onDocumentClick);
+}
 
 const showSuccessMessage = (response) => {
   if(response.status === 200) {
@@ -124,9 +128,11 @@ checkOut.addEventListener('change', () => {
 
 adForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
+  // getPrice();
   validateRoomsCapacity();
-  getPrice();
-  sendData(showSuccessMessage, new FormData(adForm));
+  if (adForm.checkValidity()) {
+    sendData(showSuccessMessage, new FormData(adForm));
+  }
 });
 switchState(true);
 

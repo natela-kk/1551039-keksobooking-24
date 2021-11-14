@@ -12,10 +12,10 @@ const getData = (onSuccess) => {
       getErrorMessage();
     });
 };
-const sendData = (showSuccessMessage, body) => {
+const sendData = (onSuccess, body) => {
   fetch(API_URL, {method: 'POST', body})
     .then((response) => {
-      showSuccessMessage(response);
+      onSuccess(response);
     });
 };
 
