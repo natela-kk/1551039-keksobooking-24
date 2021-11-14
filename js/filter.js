@@ -1,6 +1,7 @@
 import {createPinMarkers} from './map.js';
 import {mapFilters} from './main.js';
 import {debounce} from './utils/debounce.js';
+
 const DEFAULT_VALUE = 'any';
 const SIMILAR_AD_COUNT = 10;
 

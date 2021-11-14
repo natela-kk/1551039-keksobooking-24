@@ -1,8 +1,7 @@
 import {switchState} from './form.js';
 import {render} from './announcement.js';
 import {getData} from './server-requests.js';
-import {setFilterListener} from './filter.js';
-import {SIMILAR_AD_COUNT} from './filter.js';
+import {setFilterListener, SIMILAR_AD_COUNT} from './filter.js';
 import {switchFilterState} from './main.js';
 
 const InitialCoordinates = {
@@ -36,10 +35,16 @@ const mainPinMarker = L.marker(
   },
 );
 
-// const initializeMap = () => {
+const getSuccessData = (ads) => {
+  createPinMarkers(ads.slice(0, SIMILAR_AD_COUNT));
+  switchFilterState(false);
+  setFilterListener(ads);
+};
+
 const map = L.map('map-canvas')
   .on('load', () => {
     switchState(false);
+    getData(getSuccessData);
   })
   .setView({
     lat: InitialCoordinates.lat,
@@ -53,15 +58,7 @@ L.tileLayer(
   },
 ).addTo(map);
 
-const getSuccessData = (ads) => {
-  createPinMarkers(ads.slice(0, SIMILAR_AD_COUNT));
-  switchFilterState(false);
-  setFilterListener(ads);
-};
-getData(getSuccessData);
-
 mainPinMarker.addTo(map);
-// };
 
 const pinIcon = L.icon({
   iconUrl: 'img/pin.svg',

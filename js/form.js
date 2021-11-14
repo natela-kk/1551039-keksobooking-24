@@ -1,11 +1,8 @@
-import {mainPinMarker} from './map.js';
-import {map} from './map.js';
 import {mapFilters} from './main.js';
-import {InitialCoordinates} from './map.js';
-import {SCALE} from './map.js';
-import {DIGITS} from './map.js';
+import {SCALE, DIGITS, InitialCoordinates, mainPinMarker, map} from './map.js';
 import {sendData} from './server-requests.js';
 import {resetImages} from './images.js';
+
 const MIN_TITLE_LENGTH = 30;
 const adForm = document.querySelector('.ad-form');
 const controls = document.querySelectorAll('.ad-form-header, .ad-form__element');
@@ -128,7 +125,7 @@ checkOut.addEventListener('change', () => {
 
 adForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
-  // getPrice();
+  getPrice();
   validateRoomsCapacity();
   if (adForm.checkValidity()) {
     sendData(showSuccessMessage, new FormData(adForm));
